@@ -420,7 +420,7 @@ No architecture winner is selected.
 
 ## D-001 — OpenClaw as KeraniClaw host/runtime
 
-**Status:** DECIDED
+**Status:** LOCKED
 
 **Problem:**  
 Should KeraniClaw use OpenClaw as the primary host/runtime instead of rebuilding generic agent infrastructure?
@@ -431,7 +431,7 @@ Should KeraniClaw use OpenClaw as the primary host/runtime instead of rebuilding
 - Kerani-built runtime.
 
 **Decision:**  
-Use OpenClaw as the primary KeraniClaw host/runtime for the experiment and intended production direction, subject to E-001 proving the boundary. This is DECIDED but not LOCKED.
+Use OpenClaw as the primary KeraniClaw host/runtime for the experiment and intended production direction, subject to E-001 proving the boundary.
 
 **Reason:**  
 STEP 1 evidence shows significant infrastructure overlap, but the Kerani business layer still requires proof.
@@ -455,7 +455,7 @@ Q-001, Q-005.
 
 ## D-002 — OpenClaw upstream-first extension policy
 
-**Status:** DECIDED
+**Status:** LOCKED
 
 **Problem:**  
 How should KeraniClaw extend OpenClaw?
@@ -466,7 +466,7 @@ How should KeraniClaw extend OpenClaw?
 - OpenClaw core fork/modification.
 
 **Decision:**  
-Use an upstream-first policy: configuration/skills/tools/hooks/plugin/adapter/external service before any OpenClaw core modification. This is DECIDED but not LOCKED.
+Use an upstream-first policy: configuration/skills/tools/hooks/plugin/adapter/external service before any OpenClaw core modification.
 
 **Reason:**  
 Public plugins/tools/hooks/skills/configuration/external services appear capable but require prototype proof.
@@ -487,7 +487,7 @@ Q-001.
 
 ## D-003 — Runtime state vs authoritative business state
 
-**Status:** DECIDED
+**Status:** LOCKED
 
 **Problem:**  
 Can OpenClaw session/memory/state be treated as Kerani authoritative business storage?
@@ -498,7 +498,7 @@ Can OpenClaw session/memory/state be treated as Kerani authoritative business st
 - keep authoritative business storage logically separate.
 
 **Decision:**  
-Keep authoritative business state logically separate from OpenClaw session/memory/runtime state. This is DECIDED but not LOCKED.
+Keep authoritative business state logically separate from OpenClaw session/memory/runtime state.
 
 **Reason:**  
 OpenClaw runtime state serves agent/session/runtime needs; Kerani requires explicit business provenance and controlled truth transitions.
@@ -519,7 +519,7 @@ Q-003, Q-008.
 
 ## D-004 — Kerani business-truth control layer
 
-**Status:** DECIDED
+**Status:** LOCKED
 
 **Problem:**  
 Which behaviours remain Kerani-owned when OpenClaw provides the runtime?
@@ -530,7 +530,7 @@ Which behaviours remain Kerani-owned when OpenClaw provides the runtime?
 - enforce business truth through dedicated Kerani logic.
 
 **Decision:**  
-Kerani owns the business-truth control plane: interpretation → validation → clarification → reporter confirmation → authorization → idempotent business command → authoritative record → business audit provenance. This is DECIDED but not LOCKED.
+Kerani owns the business-truth control plane: interpretation → validation → clarification → reporter confirmation → authorization → idempotent business command → authoritative record → business audit provenance.
 
 **Candidate boundary:**  
 Interpretation → validation → clarification → reporter confirmation → authorization → idempotent business command → authoritative record → business audit provenance.
@@ -551,7 +551,7 @@ Q-002, Q-003.
 
 ## D-005 — Generic SuperBasic infrastructure reuse/removal
 
-**Status:** DECIDED
+**Status:** LOCKED
 
 **Problem:**  
 Which SuperBasic responsibilities should KeraniClaw avoid rebuilding?
@@ -569,7 +569,7 @@ Which SuperBasic responsibilities should KeraniClaw avoid rebuilding?
 - generic runtime backup mechanics.
 
 **Decision:**  
-Avoid rebuilding generic infrastructure already supplied by OpenClaw unless experiments expose a concrete gap. This is DECIDED but not LOCKED.
+Avoid rebuilding generic infrastructure already supplied by OpenClaw unless experiments expose a concrete gap.
 
 **Reason:**  
 OpenClaw already appears to provide these classes of infrastructure.
@@ -584,7 +584,7 @@ R-006.
 
 ## D-006 — Business idempotency remains Kerani-owned
 
-**Status:** DECIDED
+**Status:** LOCKED
 
 **Problem:**  
 Can OpenClaw queue/retry semantics guarantee safe business side effects?
@@ -595,7 +595,7 @@ Can OpenClaw queue/retry semantics guarantee safe business side effects?
 - add business-level idempotency and transaction semantics.
 
 **Decision:**  
-Business idempotency and transaction semantics remain Kerani-owned. This is DECIDED but not LOCKED.
+Business idempotency and transaction semantics remain Kerani-owned.
 
 **Reason:**  
 Runtime execution coordination is not equivalent to safe replay of external business writes.
@@ -613,7 +613,7 @@ Q-004.
 
 ## D-007 — Skills vs enforcement boundary
 
-**Status:** DECIDED
+**Status:** LOCKED
 
 **Problem:**  
 Should Kerani integrity rules be implemented primarily as skills/prompts?
@@ -624,7 +624,7 @@ Should Kerani integrity rules be implemented primarily as skills/prompts?
 - skills for guidance plus tools/hooks/services for hard controls.
 
 **Decision:**  
-Use skills/prompts for guidance; enforce integrity in deterministic tools/hooks/business services. This is DECIDED but not LOCKED.
+Use skills/prompts for guidance; enforce integrity in deterministic tools/hooks/business services.
 
 **Reason:**  
 Business integrity must not rely exclusively on model obedience.
@@ -642,7 +642,7 @@ Q-002.
 
 ## D-008 — Tenant isolation topology
 
-**Status:** DECIDED
+**Status:** LOCKED
 
 **Problem:**  
 How should KeraniClaw isolate mutually untrusted clients?
@@ -651,7 +651,7 @@ How should KeraniClaw isolate mutually untrusted clients?
 PENDING research/experiment.
 
 **Decision:**  
-For mutually untrusted clients, use an isolated OpenClaw Gateway/cell per tenant trust boundary. The exact mechanism (Fleet, separate container, VM, or host) remains an implementation question. This is DECIDED but not LOCKED.
+For mutually untrusted clients, use an isolated OpenClaw Gateway/cell per tenant trust boundary. The exact mechanism (Fleet, separate container, VM, or host) remains an implementation question.
 
 **Reason:**  
 Multi-agent isolation must not be assumed to equal a hostile multi-tenant security boundary.
@@ -669,9 +669,22 @@ Q-005.
 
 # 13. LOCKED DECISIONS
 
-No KeraniClaw architecture decision has been LOCKED in this file yet.
+On 2026-09-30 the project owner explicitly instructed **ZASS LOCK & COMMIT**.
 
-On 2026-09-30 the owner explicitly agreed to the working architecture direction recorded in D-001 through D-009. These decisions are `DECIDED`, not `LOCKED`; the relevant experiments remain required before architecture confirmation.
+The following decisions are now `LOCKED`:
+
+- **D-001** — OpenClaw is the primary KeraniClaw host/runtime.
+- **D-002** — Upstream-first extension policy; avoid OpenClaw core modification unless evidence proves it necessary.
+- **D-003** — Authoritative business state remains separate from OpenClaw runtime/session/memory state.
+- **D-004** — Kerani owns the business-truth control plane.
+- **D-005** — Do not rebuild generic infrastructure already supplied adequately by OpenClaw.
+- **D-006** — Business idempotency and transaction semantics remain Kerani-owned.
+- **D-007** — Skills/prompts guide behaviour; deterministic tools/hooks/services enforce integrity.
+- **D-008** — Mutually untrusted clients require an isolated Gateway/cell trust boundary.
+- **D-009** — OpenClaw-facing integration remains a thin runtime adapter; durable Kerani business logic stays outside OpenClaw-specific internals.
+- **D-010** — Initial pilot server baseline is 2 vCPU / 8 GB RAM / ~100 GB NVMe, with external model inference and no local LLM on the VPS.
+
+These locks establish the **design direction and starting operational baseline**. They do not claim that E-001 through E-005 have already passed. Experiments remain required to validate implementation details, capacity and assumptions. Any later change to a LOCKED decision must follow ZASS change control and explicit owner approval.
 
 ---
 
@@ -824,7 +837,7 @@ D-008.
 - [x] Initial constraints are known.
 - [ ] Critical workflows have been tested on OpenClaw.
 - [x] Major initial failure scenarios have been identified.
-- [ ] Critical decisions are LOCKED.
+- [x] Critical design-direction decisions D-001 through D-010 are LOCKED.
 - [x] No current contradiction invalidates the experiment.
 - [ ] Major candidate architecture evidence is sufficient.
 - [x] Known blockers are documented.
@@ -971,7 +984,7 @@ Initial mapping from Kerani_Core_SuperBasic behavioural responsibilities to Open
 
 ---
 
-# 23. CURRENT WORKING MENTAL MODEL — CANDIDATE ONLY
+# 23. LOCKED WORKING DIRECTION — IMPLEMENTATION EVIDENCE PENDING
 
 ```text
                     CHANNELS
@@ -1021,9 +1034,9 @@ Initial mapping from Kerani_Core_SuperBasic behavioural responsibilities to Open
 
 Current synthesis:
 
-> **CANDIDATE:** OpenClaw owns how an agent runs. Kerani owns when a business statement becomes authoritative truth.
+> **LOCKED DIRECTION:** OpenClaw owns how an agent runs. Kerani owns when a business statement becomes authoritative truth.
 
-This is not LOCKED architecture.
+This locks the architecture direction, not the final implementation architecture. E-001 through E-005 remain required before Architecture Readiness can become READY.
 
 ---
 
@@ -1070,11 +1083,11 @@ The agreed direction is:
 > **Kerani Modules = domain capabilities.**  
 > **External systems (for example n8n, Node-RED, Home Assistant, databases and business systems) = specialised infrastructure/workers.**
 
-This agreement moves D-001 through D-008 to `DECIDED`, but **does not LOCK them**. Evidence from the defined experiments is still required before architecture confirmation.
+This agreement was subsequently followed by an explicit owner instruction on 2026-09-30 to **ZASS LOCK & COMMIT**. D-001 through D-010 are therefore LOCKED as recorded in the Decision Ledger and Locked Decisions section. Evidence from the defined experiments is still required before final architecture confirmation.
 
 ## D-009 — Thin runtime adapter boundary
 
-**Status:** DECIDED
+**Status:** LOCKED
 
 **Problem:**  
 How much Kerani-specific logic should live inside OpenClaw-native extension code?
@@ -1100,18 +1113,18 @@ The adapter may normalize requests, invoke controlled Kerani services and return
 This minimizes coupling to experimental or changing OpenClaw extension APIs and preserves replaceability of the agent runtime.
 
 **Status note:**  
-Owner-approved direction; not LOCKED.
+LOCKED by explicit owner instruction on 2026-09-30.
 
 ---
 
 ## D-010 — Initial VPS sizing baseline
 
-**Status:** CANDIDATE
+**Status:** LOCKED
 
 **Question:**  
 What server size should be used for the first always-on KeraniClaw pilot?
 
-**Candidate baseline:**
+**LOCKED initial pilot baseline:**
 
 - Ubuntu LTS;
 - 2 vCPU;
@@ -1138,7 +1151,7 @@ What server size should be used for the first always-on KeraniClaw pilot?
 A 2 vCPU / 8 GB VPS is a strong pilot starting point when LLM inference is external. 16 GB is a scale-up choice, not a starting requirement.
 
 **Status note:**  
-No server vendor or paid plan has been selected or purchased.
+LOCKED as the initial pilot sizing baseline by explicit owner instruction on 2026-09-30. This does **not** lock a specific vendor or paid plan; vendor selection remains open. E-005 may justify a later change through normal ZASS change control.
 
 ---
 
