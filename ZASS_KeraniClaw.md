@@ -692,6 +692,7 @@ The following decisions are now `LOCKED`:
 - **D-009** — OpenClaw-facing integration remains a thin runtime adapter; durable Kerani business logic stays outside OpenClaw-specific internals.
 - **D-010** — Initial pilot server baseline is 2 vCPU / 8 GB RAM / ~100 GB NVMe, with external model inference and no local LLM on the VPS.
 - **D-011** — Kerani uses three explicit interaction modes: normal conversation, `/repot` for authoritative READ/report, and `/rekod` for authoritative WRITE; memory remains separated from business truth and user-specific presentation never overrides authoritative data.
+- **D-012** — KeraniClaw does not require a dedicated GPU / agentic-coding workstation; local GPU/local LLM capability remains optional and evidence-driven.
 
 These locks establish the **design direction and starting operational baseline**. They do not claim that E-001 through E-006 have already passed. Experiments remain required to validate implementation details, capacity and assumptions. Any later change to a LOCKED decision must follow ZASS change control and explicit owner approval.
 
@@ -851,7 +852,7 @@ D-008.
 | Critical assumptions closed or experiments exist | 15/15 | E-001 through E-006 cover the major unresolved architecture assumptions. |
 | Major risks addressed | 5/10 | Risks and mitigations exist, but several still need experimental evidence. |
 | Main system flow clear | 5/10 | Main boundaries and `normal chat / /repot / /rekod` are clear; detailed module/storage implementation is still open. |
-| Key decisions LOCKED | 10/10 | D-001 through D-011 are LOCKED; D-012 is DECIDED but is not a blocker to a draft. |
+| Key decisions LOCKED | 10/10 | D-001 through D-012 are LOCKED. |
 | No critical architecture blocker remains | 0/5 | Public extension sufficiency, storage choice and implementation evidence remain open. |
 
 **ZERO → ARCHITECTURE:** [████████░░] **80% — READY FOR DRAFT ARCH**
@@ -1100,7 +1101,7 @@ The agreed direction is:
 > **Kerani Modules = domain capabilities.**  
 > **External systems (for example n8n, Node-RED, Home Assistant, databases and business systems) = specialised infrastructure/workers.**
 
-This agreement was subsequently followed by an explicit owner instruction on 2026-09-30 to **ZASS LOCK & COMMIT** for D-001 through D-010. D-011 was later LOCKED and then explicitly amended through the approved P-011A–P-011D set. D-012 is DECIDED but not LOCKED. Evidence from the defined experiments is still required before final architecture confirmation.
+This agreement was subsequently followed by an explicit owner instruction on 2026-09-30 to **ZASS LOCK & COMMIT** for D-001 through D-010. D-011 was later LOCKED and then explicitly amended through the approved P-011A–P-011D set. D-012 was subsequently LOCKED by explicit owner instruction on 2026-09-30. Evidence from the defined experiments is still required before final architecture confirmation.
 
 ## D-009 — Thin runtime adapter boundary
 
@@ -1427,7 +1428,7 @@ LOCKED D-011 amended by explicit owner `PROCEED` approval on 2026-09-30. Persist
 
 ## D-012 — Dedicated agentic-coding workstation is not a KeraniClaw dependency
 
-**Status:** DECIDED
+**Status:** LOCKED
 
 **Source:** EXPLICIT — Project Owner; approved as P-012 through `PROCEED` on 2026-09-30.
 
@@ -1453,7 +1454,7 @@ KeraniClaw reuses OpenClaw for generic agent runtime infrastructure and uses a t
 Hardware purchases for other workloads may still be independently useful, but they are outside the minimum KeraniClaw architecture requirement.
 
 **Status note:**  
-DECIDED through `PROCEED`; not LOCKED because P-012 was not explicitly marked for LOCK.
+LOCKED by explicit project-owner instruction on 2026-09-30. Persistence to GitHub is authorized by the separate `COMMIT` instruction.
 
 ---
 
@@ -1497,6 +1498,15 @@ D-003, D-004, D-006, D-007, D-011.
 ---
 
 # 27. CHANGELOG
+
+## 2026-09-30 — LOCK D-012 + COMMIT
+
+- **D-012** changed from `DECIDED` to `LOCKED` by explicit project-owner instruction.
+- Locked constraint: KeraniClaw must not depend on a dedicated GPU / agentic-coding workstation.
+- Local GPU, local LLM and local inference remain optional future capabilities justified only by proven use cases.
+- ZERO → ARCHITECTURE remains **80% — READY FOR DRAFT ARCH**; this lock closes a decision state but does not remove the existing experiment/evidence blockers.
+
+---
 
 ## 2026-09-30 — PROCEED + COMMIT
 
