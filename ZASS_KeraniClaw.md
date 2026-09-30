@@ -2,7 +2,7 @@
 
 **Project:** KeraniClaw — OpenClaw-Native Architecture Experiment  
 **Repository:** `dzuddiyn/KeraniClaw-Core`  
-**ZASS baseline:** Zero-to-Architecture Structured Sprint v0.1.18  
+**ZASS baseline:** Zero-to-Architecture Structured Sprint v0.3.4  
 **Status:** DISCOVERY / ARCHITECTURE RECONNAISSANCE  
 **Owner:** Project Owner  
 **Created:** 2026-09-28
@@ -45,6 +45,14 @@ AI may NOT:
 - begin large-scale implementation before the relevant architecture gaps are understood.
 
 Only the project owner may change a decision to `LOCKED`.
+
+Full-ZASS command semantics for this project:
+
+- `PROCEED` approves only the explicitly listed `PROPOSED FOR PROCEED` set from the latest ZASS mapping.
+- `LOCK` / `LOCK DECISION` changes an explicitly identified owner decision to `LOCKED`.
+- `PROCEED` and `LOCK` do **not** commit or push.
+- `COMMIT` is the separate persistence action that updates the authoritative GitHub state.
+- AI must never infer `COMMIT` from approval, agreement, `PROCEED`, or `LOCK`.
 
 Decision states:
 
@@ -683,7 +691,7 @@ The following decisions are now `LOCKED`:
 - **D-008** — Mutually untrusted clients require an isolated Gateway/cell trust boundary.
 - **D-009** — OpenClaw-facing integration remains a thin runtime adapter; durable Kerani business logic stays outside OpenClaw-specific internals.
 - **D-010** — Initial pilot server baseline is 2 vCPU / 8 GB RAM / ~100 GB NVMe, with external model inference and no local LLM on the VPS.
-- **D-011** — Conversation and relationship memory remain flexible, but authoritative business writes require explicit write intent through the controlled write gate; initial universal trigger: `/rekod`.
+- **D-011** — Kerani uses three explicit interaction modes: normal conversation, `/repot` for authoritative READ/report, and `/rekod` for authoritative WRITE; memory remains separated from business truth and user-specific presentation never overrides authoritative data.
 
 These locks establish the **design direction and starting operational baseline**. They do not claim that E-001 through E-006 have already passed. Experiments remain required to validate implementation details, capacity and assumptions. Any later change to a LOCKED decision must follow ZASS change control and explicit owner approval.
 
@@ -831,19 +839,27 @@ D-008.
 
 # 18. ARCHITECTURE READINESS
 
-- [x] Core experiment problem is clear.
-- [ ] Primary production users are fully defined.
-- [x] Experiment goals are defined.
-- [x] Non-goals are defined.
-- [x] Initial constraints are known.
-- [ ] Critical workflows have been tested on OpenClaw.
-- [x] Major initial failure scenarios have been identified.
-- [x] Critical design-direction decisions D-001 through D-011 are LOCKED.
-- [x] No current contradiction invalidates the experiment.
-- [ ] Major candidate architecture evidence is sufficient.
-- [x] Known blockers are documented.
+`ZERO → ARCHITECTURE` follows Full ZASS v0.3.4 scoring. It measures architecture maturity, not coding progress.
 
-**Readiness:** `NOT READY`
+| Criterion | Score | Reason |
+|---|---:|---|
+| Purpose / problem clear | 10/10 | OpenClaw-hosted Kerani business-control experiment is explicit. |
+| Users / stakeholders / outcomes clear | 5/10 | Per-user behaviour is defined, but primary production-user set is not yet fully closed. |
+| Scope / non-goals clear | 10/10 | Runtime reuse, business-truth boundary and non-goals are documented. |
+| Constraints / quality attributes known | 10/10 | Maintainability, security, tenant isolation, portability and cost constraints are explicit. |
+| Options / trade-offs compared | 10/10 | Stable extension vs core modification and Kerani/OpenClaw responsibility trade-offs are documented. |
+| Critical assumptions closed or experiments exist | 15/15 | E-001 through E-006 cover the major unresolved architecture assumptions. |
+| Major risks addressed | 5/10 | Risks and mitigations exist, but several still need experimental evidence. |
+| Main system flow clear | 5/10 | Main boundaries and `normal chat / /repot / /rekod` are clear; detailed module/storage implementation is still open. |
+| Key decisions LOCKED | 10/10 | D-001 through D-011 are LOCKED; D-012 is DECIDED but is not a blocker to a draft. |
+| No critical architecture blocker remains | 0/5 | Public extension sufficiency, storage choice and implementation evidence remain open. |
+
+**ZERO → ARCHITECTURE:** [████████░░] **80% — READY FOR DRAFT ARCH**
+
+**Evidence Confidence:** **UNVALIDATED** — architecture direction is clear, but E-001 through E-006 have not yet produced empirical PASS evidence.
+
+Architecture confirmation remains blocked by implementation evidence and open technical choices. A draft architecture may now be proposed under Full ZASS v0.3.4, but it MUST NOT become confirmed architecture without the `BUILD ARCHITECTURE → YA, CONFIRM ARCHITECTURE` gate.
+
 
 ---
 
@@ -1037,7 +1053,7 @@ Current synthesis:
 
 > **LOCKED DIRECTION:** OpenClaw owns how an agent runs. Kerani owns when a business statement becomes authoritative truth.
 
-This locks the architecture direction, not the final implementation architecture. E-001 through E-006 remain required before Architecture Readiness can become READY.
+This locks the architecture direction, not the final implementation architecture. Full-ZASS v0.3.4 readiness is now 80% — READY FOR DRAFT ARCH; E-001 through E-006 remain required for evidence and final confirmation.
 
 ---
 
@@ -1084,7 +1100,7 @@ The agreed direction is:
 > **Kerani Modules = domain capabilities.**  
 > **External systems (for example n8n, Node-RED, Home Assistant, databases and business systems) = specialised infrastructure/workers.**
 
-This agreement was subsequently followed by an explicit owner instruction on 2026-09-30 to **ZASS LOCK & COMMIT**. D-001 through D-010 are therefore LOCKED as recorded in the Decision Ledger and Locked Decisions section. Evidence from the defined experiments is still required before final architecture confirmation.
+This agreement was subsequently followed by an explicit owner instruction on 2026-09-30 to **ZASS LOCK & COMMIT** for D-001 through D-010. D-011 was later LOCKED and then explicitly amended through the approved P-011A–P-011D set. D-012 is DECIDED but not LOCKED. Evidence from the defined experiments is still required before final architecture confirmation.
 
 ## D-009 — Thin runtime adapter boundary
 
@@ -1189,39 +1205,67 @@ D-010.
 
 # 26. OWNER LOCK — CONVERSATIONAL MEMORY & EXPLICIT WRITE GATE
 
-## D-011 — Conversational Memory & Explicit Business Write Gate
+## D-011 — Conversational Memory, Read/Write Commands & User Adaptation
 
 **Status:** LOCKED
 
 **Owner principle:**  
 > **Sembang bebas. Rekod terkawal.**
 
-**Decision:**  
-KeraniClaw MUST separate natural human conversation and relationship memory from authoritative business writes.
+**Amendment approval:**  
+P-011A, P-011B, P-011C and P-011D were explicitly approved by the project owner through `PROCEED` on 2026-09-30. This amendment updates the existing LOCKED D-011 without changing its core safety intent.
+
+### Three interaction modes
+
+KeraniClaw SHALL distinguish three user-facing modes:
+
+```text
+NORMAL CHAT              /repot                    /rekod
+     │                      │                         │
+relationship /          authoritative             authoritative
+conversation               READ                      WRITE
+reasoning                   │                         │
+     │                      │                    validation
+no authoritative            │                    authorization
+business read/write         │                    clarification
+                            │                    confirmation
+                            │                    idempotency
+                            │                         │
+                            ▼                         ▼
+                         REPORT              BUSINESS RECORD
+```
+
+#### 1. Normal conversation
 
 Normal conversation may:
 
 - converse naturally and casually;
-- remember user communication preferences;
-- adapt tone, response length and explanation style;
-- learn stable working preferences and recurring patterns;
-- retain non-authoritative conversational context;
-- reason over authoritative business data;
-- answer questions and generate reports from authoritative records;
-- suggest actions;
-- ask clarifying questions.
+- reason with the user;
+- learn and apply communication preferences;
+- use relationship and conversational context;
+- discuss ideas, plans and suggestions;
+- maintain temporary conversational context.
 
-Normal conversation MUST NOT create or mutate an authoritative business record merely because a user mentioned a fact during chat.
+Normal conversation MUST NOT silently perform an authoritative business read or write.
 
-Authoritative write intent MUST be explicit.
+#### 2. `/repot` — authoritative READ / report
 
-The initial universal write trigger is:
+`/repot` is the current explicit command for querying, analysing or reporting from Authoritative Business Records.
 
-`/rekod`
+Examples:
 
-A controlled equivalent keyword or explicit structured write action MAY be added later, but silent inference from ordinary conversation MUST NOT be sufficient to create an authoritative record.
+- `/repot stok baja sekarang`
+- `/repot plot mana hasil jatuh minggu ini`
+- `/repot claim yang belum selesai`
+- `/repot banding penggunaan baja bulan ini dengan bulan lepas`
 
-### Write flow
+The response may remain conversational and may adapt to the user's preferred style, but the facts must come from the authoritative data source subject to authorization.
+
+`/repot` MUST NOT mutate authoritative business records.
+
+#### 3. `/rekod` — authoritative WRITE
+
+`/rekod` is the current explicit command for creating or changing an Authoritative Business Record.
 
 ```text
 /rekod
@@ -1243,116 +1287,206 @@ authoritative write
 business audit trail
 ```
 
-### Read / report flow
+Ordinary conversation MUST NOT be promoted silently into a business write.
 
-Read-only questions and reports do not require `/rekod`.
+### Memory classes
 
-Examples:
+KeraniClaw SHALL distinguish at least four conceptual classes:
 
-- "Berapa stok baja sekarang?"
-- "Plot mana hasil jatuh minggu ini?"
-- "Buat summary claim belum selesai."
-- "Bandingkan penggunaan baja bulan ini dengan bulan lepas."
+```text
+KERANI MEMORY
+│
+├── 1. USER MEMORY
+│      preference
+│      communication style
+│      goals
+│      working habits
+│
+├── 2. CONVERSATION MEMORY
+│      current discussion
+│      temporary context
+│
+├── 3. CLIENT KNOWLEDGE
+│      company SOP
+│      plot structure
+│      products
+│      terminology
+│      staff roles
+│
+└── 4. AUTHORITATIVE BUSINESS RECORD
+       stock
+       transactions
+       tasks
+       claims
+       harvest
+       accounting
+       audit
+```
 
-Kerani may interpret these naturally, query authoritative records and respond conversationally, subject to permissions.
+Class 4 has the strongest integrity rules.
 
-### Memory boundary
+**Authority rule:**
 
-KeraniClaw SHALL distinguish at least these four conceptual classes:
+> **AI memory never overrides the Authoritative Business Record.**
 
-1. **User / Relationship Memory**
-   - preferred tone;
-   - preferred response style;
-   - recurring work habits;
-   - stable user preferences;
-   - user goals relevant to the working relationship.
+If Kerani remembers that stock may have been 10 units but the authoritative database says 8 units, the business truth is 8.
 
-2. **Conversation / Session Memory**
-   - temporary discussion context;
-   - current task;
-   - short-lived references and unresolved conversation state.
+A valid conversational response may explain the conflict naturally, for example:
 
-3. **Client Knowledge**
-   - company terminology;
-   - SOP;
-   - organizational structure;
-   - plot/site/product definitions;
-   - non-transactional domain knowledge.
+> "Saya ingat kita pernah bincang angka 10, tetapi rekod rasmi sekarang menunjukkan 8 guni."
 
-4. **Authoritative Business Record**
-   - stock;
-   - transactions;
-   - harvest;
-   - claims;
-   - tasks;
-   - approved operational records;
-   - other business facts designated authoritative.
+### Preference lifecycle
 
-If memory conflicts with the authoritative business record, the authoritative business record wins.
+A casual statement does not automatically become durable User Memory.
 
-### Preference learning rule
+The default learning progression is:
 
-Kerani may infer preference candidates from repeated interaction, but a single casual statement SHOULD NOT automatically become a durable preference unless:
+```text
+Observation
+    ↓
+Repeated Pattern
+    ↓
+Preference Candidate
+    ↓
+User Memory
+```
 
-- the user explicitly asks Kerani to remember it; or
-- repeated evidence makes the preference stable enough under the future memory policy.
+Example:
 
-Preference memory MUST NOT be treated as an authoritative business record.
+- one occurrence of "Jawab pendek sikit." → **Observation**;
+- repeated summary-first behaviour → **Repeated Pattern**;
+- "User consistently prefers summary-first responses." → **Preference Candidate**;
+- once sufficiently stable under the memory policy → **User Memory**.
+
+An explicit user instruction such as:
+
+> "Kerani, lepas ni kalau laporan bagi summary dulu."
+
+may be stored directly as an explicit User Memory preference without waiting for repeated observations.
+
+Preference memory MUST NOT become an Authoritative Business Record.
+
+### Per-user conversational personality
+
+The same Kerani instance may adapt its conversational presentation to each authenticated user.
+
+Example:
+
+```text
+                 KERANI BSE
+                     │
+       ┌─────────────┼─────────────┐
+       │             │             │
+     Hafiz         Syafiq        Manager
+       │             │             │
+   technical        simple        concise
+   detailed         Malay         executive
+   casual           casual        formal
+```
+
+The underlying business facts remain the same.
+
+```text
+same Kerani / client cell
+        │
+same authoritative business data
+        │
+permission-filtered per user / role
+        │
+presentation adapted per user
+```
+
+User preference may change tone, structure, detail level and explanation style. It MUST NOT change business truth, permission boundaries or transaction semantics.
 
 ### Human-facing design objective
 
-Kerani SHOULD feel increasingly familiar and natural to each user over time, while preserving strict record integrity underneath.
-
-The intended experience is:
+Kerani SHOULD become increasingly familiar and natural to each user over time while maintaining strict record integrity underneath.
 
 ```text
 natural human conversation
         ↓
 relationship / preference awareness
         ↓
-reasoning / reporting / suggestions
+normal chat OR explicit /repot OR explicit /rekod
         ↓
-explicit write intent only
+deterministic Business Gate for authoritative operations
         ↓
-deterministic Business Gate
-        ↓
-authoritative business record
+Authoritative Business Record
 ```
 
 **Reason:**  
-OpsMate demonstrated strong record discipline but a rigid conversational surface. KeraniClaw should preserve the discipline behind the interface while allowing the human-facing layer to remain conversational, adaptive and relationship-aware.
+OpsMate demonstrated strong record discipline but a rigid conversational surface. KeraniClaw preserves that discipline behind the interface while allowing the human-facing layer to remain conversational, adaptive and relationship-aware.
 
 **Related locked decisions:**  
 D-003, D-004, D-006, D-007, D-009.
 
 **Status note:**  
-LOCKED by explicit owner instruction on 2026-09-30.
+LOCKED D-011 amended by explicit owner `PROCEED` approval on 2026-09-30. Persistence occurred only after the separate `COMMIT` instruction.
 
 ---
 
-## E-006 — Conversational Freedom vs Record Integrity Test
+## D-012 — Dedicated agentic-coding workstation is not a KeraniClaw dependency
+
+**Status:** DECIDED
+
+**Source:** EXPLICIT — Project Owner; approved as P-012 through `PROCEED` on 2026-09-30.
+
+**Decision:**  
+KeraniClaw development and operation must not require a dedicated GPU / agentic-coding workstation.
+
+The intended baseline is:
+
+```text
+ordinary capable development PC / laptop
+            +
+KeraniClaw VPS
+            +
+external cloud / subscription AI models
+```
+
+A high-end GPU workstation, local LLM stack or local inference server may be added later if a proven use case justifies it, but none is an architecture prerequisite.
+
+**Reason:**  
+KeraniClaw reuses OpenClaw for generic agent runtime infrastructure and uses a thin Kerani adapter plus Business Control Plane. The project should therefore avoid creating an unnecessary hardware dependency for development or production.
+
+**Consequence:**  
+Hardware purchases for other workloads may still be independently useful, but they are outside the minimum KeraniClaw architecture requirement.
+
+**Status note:**  
+DECIDED through `PROCEED`; not LOCKED because P-012 was not explicitly marked for LOCK.
+
+---
+
+## E-006 — Conversation, Preference & Explicit Read/Write Boundary Test
 
 **Question being tested:**  
-Can Kerani hold natural, preference-aware conversations without accidentally creating authoritative business records, while `/rekod` reliably opens the controlled write path?
+Can Kerani remain natural and user-adaptive while ensuring authoritative READ occurs only through `/repot` and authoritative WRITE only through `/rekod`?
 
 **Method:**
 
-1. Run ordinary conversations containing numbers, estimates, corrections and uncertain statements.
-2. Verify that no authoritative write occurs without explicit write intent.
-3. Use `/rekod` with complete and incomplete business statements.
-4. Verify validation, clarification, authorization, confirmation and idempotency behaviour.
-5. Request read-only reports in natural language without commands.
-6. Verify that relationship memory and business truth remain distinct.
-7. Introduce a deliberate conflict between conversational memory and authoritative data and verify that authoritative data wins.
+1. Run ordinary conversations containing business-like numbers, estimates and corrections.
+2. Verify that normal chat performs no silent authoritative read or write.
+3. Use `/repot` to request authoritative stock, task, claim and harvest information.
+4. Verify that `/repot` is read-only and respects user permissions.
+5. Use `/rekod` with complete and incomplete business statements.
+6. Verify validation, clarification, authorization, confirmation and idempotency behaviour.
+7. Repeat communication-style requests and observe the preference lifecycle:
+   `Observation → Repeated Pattern → Preference Candidate → User Memory`.
+8. Provide one explicit preference instruction and verify it can become User Memory directly.
+9. Query the same authoritative fact through users with different communication preferences and verify facts remain identical while presentation may differ.
+10. Introduce a deliberate conflict between AI memory and authoritative business data and verify that authoritative data wins.
 
 **Success criteria:**
 
+- zero silent authoritative reads from ordinary chat;
 - zero silent authoritative writes from ordinary chat;
-- `/rekod` reliably invokes the controlled write path;
+- `/repot` reliably invokes permission-controlled authoritative READ only;
+- `/rekod` reliably invokes the controlled WRITE path;
 - incomplete writes are clarified or rejected safely;
-- read-only reporting remains conversational;
-- user preferences may affect presentation but not business truth;
-- authoritative records override conflicting conversational memory.
+- repeated observations do not become durable User Memory prematurely;
+- explicit user preference can be stored directly;
+- per-user presentation may differ while authoritative facts remain identical;
+- Authoritative Business Record overrides conflicting AI memory.
 
 **Result:**  
 PENDING.
@@ -1362,7 +1496,33 @@ D-003, D-004, D-006, D-007, D-011.
 
 ---
 
-# 27. SOURCE NOTES
+# 27. CHANGELOG
+
+## 2026-09-30 — PROCEED + COMMIT
+
+Approved proposal set:
+
+- **P-011A** — three interaction modes: normal chat, `/repot` READ, `/rekod` WRITE.
+- **P-011B** — preference lifecycle: Observation → Repeated Pattern → Preference Candidate → User Memory.
+- **P-011C** — four memory classes; Authoritative Business Record overrides AI memory.
+- **P-011D** — per-user conversational personality with shared authoritative facts and permission-controlled access.
+- **P-012** — dedicated agentic-coding workstation is not a KeraniClaw dependency; recorded as D-012 DECIDED, not LOCKED.
+- **P-ZASS** — project method baseline migrated from Full ZASS v0.1.18 to v0.3.4.
+
+Process correction recorded:
+
+- approval / LOCK and Git persistence are separate;
+- `PROCEED` does not commit or push;
+- only explicit `COMMIT` authorizes Git persistence.
+
+Architecture readiness migrated to Full-ZASS v0.3.4 scoring:
+
+- **ZERO → ARCHITECTURE: 80% — READY FOR DRAFT ARCH**
+- **Evidence Confidence: UNVALIDATED**
+
+---
+
+# 28. SOURCE NOTES
 
 Project repositories:
 
