@@ -2,8 +2,8 @@
 
 **Project:** KeraniClaw — OpenClaw-Native Architecture Experiment  
 **Repository:** `dzuddiyn/KeraniClaw-Core`  
-**ZASS baseline:** Zero-to-Architecture Structured Sprint v0.3.4  
-**Status:** DISCOVERY / ARCHITECTURE RECONNAISSANCE  
+**ZASS baseline:** Zero-to-Architecture Structured Sprint v0.3.5  
+**Status:** PARKED / EVIDENCE WAITING — Temaya first; KeraniClaw resumes after prerequisite evidence  
 **Owner:** Project Owner  
 **Created:** 2026-09-28
 
@@ -693,6 +693,9 @@ The following decisions are now `LOCKED`:
 - **D-010** — Initial pilot server baseline is 2 vCPU / 8 GB RAM / ~100 GB NVMe, with external model inference and no local LLM on the VPS.
 - **D-011** — Kerani uses three explicit interaction modes: normal conversation, `/repot` for authoritative READ/report, and `/rekod` for authoritative WRITE; memory remains separated from business truth and user-specific presentation never overrides authoritative data.
 - **D-012** — KeraniClaw does not require a dedicated GPU / agentic-coding workstation; local GPU/local LLM capability remains optional and evidence-driven.
+- **D-013** — Temaya is the predecessor experiment; KeraniClaw implementation is intentionally PARKED until Temaya produces useful working evidence.
+- **D-014** — Temaya, KeraniClaw and SuperBasic remain separate evidence tracks first; strengths are synthesized later into Kerani AI Architecture after SuperBasic Architecture is sufficiently complete.
+- **D-015** — SuperBasic must preserve and validate durable behavioural contracts; rebuilding obsolete/generic plumbing to achieve a full legacy regression pass is not a prerequisite.
 
 These locks establish the **design direction and starting operational baseline**. They do not claim that E-001 through E-006 have already passed. Experiments remain required to validate implementation details, capacity and assumptions. Any later change to a LOCKED decision must follow ZASS change control and explicit owner approval.
 
@@ -712,7 +715,8 @@ These locks establish the **design direction and starting operational baseline**
 |---|---|---|---|
 | DF-001 | Select KeraniClaw vs Kerani Native winner | Evidence is insufficient. | Complete architecture experiments and common evaluation criteria. |
 | DF-002 | OpenClaw core modification | No demonstrated limitation requires it yet. | Public extension mechanism proven insufficient. |
-| DF-003 | Broad coding/implementation | Premature before boundary experiments. | Minimum adaptation design is evidence-backed. |
+| DF-003 | Broad KeraniClaw coding/implementation | Intentionally deferred under D-013 while Temaya produces shared runtime/human-interaction evidence. | Temaya produces useful working evidence and SuperBasic architecture is sufficiently complete for comparison. |
+| DF-004 | Final Kerani AI architecture synthesis | Premature while Temaya, KeraniClaw and SuperBasic evidence are still separate/incomplete. | SuperBasic Architecture complete enough to anchor business contracts and both experiment tracks have useful evidence. |
 
 ---
 
@@ -725,6 +729,8 @@ These locks establish the **design direction and starting operational baseline**
 - [ ] Map a concrete SuperBasic behavioural vertical slice into OpenClaw.
 - [ ] Establish test strategy for authoritative business writes.
 - [ ] Define evaluation measurements for later Track A vs Track B comparison.
+- [ ] Capture Temaya evidence that is transferable to KeraniClaw without importing assumptions silently.
+- [ ] Define the minimum SuperBasic behavioural-contract evidence required before final Kerani AI synthesis.
 
 ---
 
@@ -852,12 +858,12 @@ D-008.
 | Critical assumptions closed or experiments exist | 15/15 | E-001 through E-006 cover the major unresolved architecture assumptions. |
 | Major risks addressed | 5/10 | Risks and mitigations exist, but several still need experimental evidence. |
 | Main system flow clear | 5/10 | Main boundaries and `normal chat / /repot / /rekod` are clear; detailed module/storage implementation is still open. |
-| Key decisions LOCKED | 10/10 | D-001 through D-012 are LOCKED. |
+| Key decisions LOCKED | 10/10 | D-001 through D-015 are LOCKED. |
 | No critical architecture blocker remains | 0/5 | Public extension sufficiency, storage choice and implementation evidence remain open. |
 
 **ZERO → ARCHITECTURE:** [████████░░] **80% — READY FOR DRAFT ARCH**
 
-**Evidence Confidence:** **UNVALIDATED** — architecture direction is clear, but E-001 through E-006 have not yet produced empirical PASS evidence.
+**Evidence Confidence:** **UNVALIDATED** — architecture direction and sequencing are clear, but KeraniClaw E-001 through E-006 have not yet produced empirical PASS evidence; Temaya evidence is not automatically treated as KeraniClaw evidence.
 
 Architecture confirmation remains blocked by implementation evidence and open technical choices. A draft architecture may now be proposed under Full ZASS v0.3.4, but it MUST NOT become confirmed architecture without the `BUILD ARCHITECTURE → YA, CONFIRM ARCHITECTURE` gate.
 
@@ -1054,7 +1060,7 @@ Current synthesis:
 
 > **LOCKED DIRECTION:** OpenClaw owns how an agent runs. Kerani owns when a business statement becomes authoritative truth.
 
-This locks the architecture direction, not the final implementation architecture. Full-ZASS v0.3.4 readiness is now 80% — READY FOR DRAFT ARCH; E-001 through E-006 remain required for evidence and final confirmation.
+This locks the architecture direction, not the final implementation architecture. Full-ZASS v0.3.5 readiness remains 80% — READY FOR DRAFT ARCH; execution is intentionally PARKED under D-013 while Temaya and SuperBasic produce prerequisite evidence. E-001 through E-006 remain pending for KeraniClaw evidence.
 
 ---
 
@@ -1101,7 +1107,7 @@ The agreed direction is:
 > **Kerani Modules = domain capabilities.**  
 > **External systems (for example n8n, Node-RED, Home Assistant, databases and business systems) = specialised infrastructure/workers.**
 
-This agreement was subsequently followed by an explicit owner instruction on 2026-09-30 to **ZASS LOCK & COMMIT** for D-001 through D-010. D-011 was later LOCKED and then explicitly amended through the approved P-011A–P-011D set. D-012 was subsequently LOCKED by explicit owner instruction on 2026-09-30. Evidence from the defined experiments is still required before final architecture confirmation.
+This agreement was subsequently followed by an explicit owner instruction on 2026-09-30 to **ZASS LOCK & COMMIT** for D-001 through D-010. D-011 was later LOCKED and then explicitly amended through the approved P-011A–P-011D set. D-012 was subsequently LOCKED by explicit owner instruction on 2026-09-30. On 2026-10-01 the owner also LOCKED D-013 through D-015: Temaya-first sequencing, separate evidence tracks before synthesis, and a SuperBasic completion boundary focused on durable behavioural contracts rather than rebuilding obsolete runtime plumbing. Evidence from the defined experiments is still required before final architecture confirmation.
 
 ## D-009 — Thin runtime adapter boundary
 
@@ -1458,6 +1464,114 @@ LOCKED by explicit project-owner instruction on 2026-09-30. Persistence to GitHu
 
 ---
 
+## D-013 — Temaya-first execution sequence
+
+**Status:** LOCKED
+
+**Source:** EXPLICIT — Project Owner, 2026-10-01.
+
+**Decision:**  
+Temaya is the active predecessor experiment. KeraniClaw implementation is intentionally deferred until Temaya has produced useful working evidence.
+
+The sequence is:
+
+```text
+Temaya
+   ↓
+prove human/agent/runtime patterns in practice
+   ↓
+KeraniClaw
+   ↓
+test business-agent patterns on top of the learned runtime strengths
+```
+
+KeraniClaw is therefore not abandoned; it is intentionally PARKED as a later experiment.
+
+**Reason:**  
+Temaya overlaps materially with KeraniClaw in human-facing agent behaviour, memory, tool flow and runtime interaction. Proving those patterns once first reduces duplicate debugging and repeated infrastructure work.
+
+**Consequence:**  
+Do not start broad KeraniClaw implementation merely to maintain momentum while Temaya is still establishing the shared runtime/interaction evidence.
+
+**Locked by:** Project Owner  
+**Date:** 2026-10-01
+
+---
+
+## D-014 — Separate experiments first; synthesize strengths later
+
+**Status:** LOCKED
+
+**Source:** EXPLICIT — Project Owner, 2026-10-01.
+
+**Decision:**  
+Temaya, KeraniClaw and Kerani Core SuperBasic remain separate evidence tracks while their strengths are being discovered.
+
+Their roles are:
+
+```text
+Kerani Core SuperBasic
+    → business behaviour / integrity / contracts / architecture baseline
+
+Temaya
+    → human interaction / agent runtime / memory / tool-flow evidence
+
+KeraniClaw
+    → business-agent / OpenClaw / controlled READ-WRITE evidence
+
+                 ↓ later synthesis
+
+            Kerani AI Architecture
+```
+
+The strengths of Temaya and KeraniClaw may be combined into the future Kerani AI Architecture only after the Kerani Core SuperBasic Architecture is complete enough to act as the business-behaviour reference.
+
+**Reason:**  
+Prematurely merging the projects would blur what each experiment actually proves and could import untested runtime behaviour into business architecture.
+
+**Consequence:**  
+Cross-project learning is encouraged, but no project silently overwrites another project's LOCKED decisions. Final synthesis must be evidence-backed and explicit.
+
+**Locked by:** Project Owner  
+**Date:** 2026-10-01
+
+---
+
+## D-015 — SuperBasic completion boundary: preserve behaviour, not obsolete plumbing
+
+**Status:** LOCKED
+
+**Source:** EXPLICIT — Project Owner direction plus owner-approved ZASS synthesis, 2026-10-01.
+
+**Decision:**  
+Kerani Core SuperBasic does not have to be rebuilt into a complete legacy-style runtime and driven through every historical regression test merely to qualify as the reference for future Kerani AI architecture.
+
+The required outcome is instead:
+
+- a sufficiently complete SuperBasic architecture;
+- explicit behavioural contracts for business truth and integrity;
+- critical regression/evidence for behaviours that MUST survive;
+- traceable rules for validation, clarification, confirmation, authorization, idempotency, audit and related business semantics.
+
+Regression effort SHOULD target behaviour that must survive into future architectures.
+
+Generic or superseded implementation plumbing does not need to be rebuilt solely to make the old implementation pass a broad regression suite, unless a specific unresolved behaviour cannot be validated any other way.
+
+**Principle:**
+
+> **Regression-test the behaviour that must survive, not implementation that may be discarded.**
+
+**Reason:**  
+Rebuilding generic runtime plumbing that OpenClaw or another runtime may replace creates high maintenance/debug cost without necessarily increasing confidence in the durable Kerani business contracts.
+
+**Boundary:**  
+This decision does not permit skipping evidence for critical business integrity. It narrows what must be proven; it does not remove the requirement to prove it.
+
+**Locked by:** Project Owner  
+**Date:** 2026-10-01
+
+---
+
 ## E-006 — Conversation, Preference & Explicit Read/Write Boundary Test
 
 **Question being tested:**  
@@ -1498,6 +1612,18 @@ D-003, D-004, D-006, D-007, D-011.
 ---
 
 # 27. CHANGELOG
+
+## 2026-10-01 — ZASS + LOCK D-013..D-015 + COMMIT
+
+- Migrated project baseline from Full ZASS **v0.3.4 → v0.3.5**.
+- **D-013 LOCKED** — Temaya is the predecessor experiment; KeraniClaw implementation is PARKED until useful Temaya evidence exists.
+- **D-014 LOCKED** — Temaya, KeraniClaw and SuperBasic remain separate evidence tracks before later Kerani AI architecture synthesis.
+- **D-015 LOCKED** — SuperBasic completion focuses on durable behavioural contracts and critical behaviour regression, not rebuilding generic/obsolete runtime plumbing solely to pass a broad legacy regression suite.
+- Added deferred final-synthesis trigger and cross-project evidence open loops.
+- ZERO → ARCHITECTURE remains **80% — READY FOR DRAFT ARCH**.
+- **Evidence Confidence remains UNVALIDATED** for KeraniClaw because E-001 through E-006 remain pending.
+
+---
 
 ## 2026-09-30 — LOCK D-012 + COMMIT
 
