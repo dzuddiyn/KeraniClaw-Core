@@ -420,7 +420,7 @@ No architecture winner is selected.
 
 ## D-001 — OpenClaw as KeraniClaw host/runtime
 
-**Status:** CANDIDATE
+**Status:** DECIDED
 
 **Problem:**  
 Should KeraniClaw use OpenClaw as the primary host/runtime instead of rebuilding generic agent infrastructure?
@@ -431,7 +431,7 @@ Should KeraniClaw use OpenClaw as the primary host/runtime instead of rebuilding
 - Kerani-built runtime.
 
 **Decision:**  
-PENDING.
+Use OpenClaw as the primary KeraniClaw host/runtime for the experiment and intended production direction, subject to E-001 proving the boundary. This is DECIDED but not LOCKED.
 
 **Reason:**  
 STEP 1 evidence shows significant infrastructure overlap, but the Kerani business layer still requires proof.
@@ -455,7 +455,7 @@ Q-001, Q-005.
 
 ## D-002 — OpenClaw upstream-first extension policy
 
-**Status:** CANDIDATE
+**Status:** DECIDED
 
 **Problem:**  
 How should KeraniClaw extend OpenClaw?
@@ -466,7 +466,7 @@ How should KeraniClaw extend OpenClaw?
 - OpenClaw core fork/modification.
 
 **Decision:**  
-PENDING.
+Use an upstream-first policy: configuration/skills/tools/hooks/plugin/adapter/external service before any OpenClaw core modification. This is DECIDED but not LOCKED.
 
 **Reason:**  
 Public plugins/tools/hooks/skills/configuration/external services appear capable but require prototype proof.
@@ -487,7 +487,7 @@ Q-001.
 
 ## D-003 — Runtime state vs authoritative business state
 
-**Status:** CANDIDATE
+**Status:** DECIDED
 
 **Problem:**  
 Can OpenClaw session/memory/state be treated as Kerani authoritative business storage?
@@ -498,7 +498,7 @@ Can OpenClaw session/memory/state be treated as Kerani authoritative business st
 - keep authoritative business storage logically separate.
 
 **Decision:**  
-PENDING.
+Keep authoritative business state logically separate from OpenClaw session/memory/runtime state. This is DECIDED but not LOCKED.
 
 **Reason:**  
 OpenClaw runtime state serves agent/session/runtime needs; Kerani requires explicit business provenance and controlled truth transitions.
@@ -519,7 +519,7 @@ Q-003, Q-008.
 
 ## D-004 — Kerani business-truth control layer
 
-**Status:** CANDIDATE
+**Status:** DECIDED
 
 **Problem:**  
 Which behaviours remain Kerani-owned when OpenClaw provides the runtime?
@@ -530,7 +530,7 @@ Which behaviours remain Kerani-owned when OpenClaw provides the runtime?
 - enforce business truth through dedicated Kerani logic.
 
 **Decision:**  
-PENDING.
+Kerani owns the business-truth control plane: interpretation → validation → clarification → reporter confirmation → authorization → idempotent business command → authoritative record → business audit provenance. This is DECIDED but not LOCKED.
 
 **Candidate boundary:**  
 Interpretation → validation → clarification → reporter confirmation → authorization → idempotent business command → authoritative record → business audit provenance.
@@ -551,7 +551,7 @@ Q-002, Q-003.
 
 ## D-005 — Generic SuperBasic infrastructure reuse/removal
 
-**Status:** CANDIDATE
+**Status:** DECIDED
 
 **Problem:**  
 Which SuperBasic responsibilities should KeraniClaw avoid rebuilding?
@@ -569,7 +569,7 @@ Which SuperBasic responsibilities should KeraniClaw avoid rebuilding?
 - generic runtime backup mechanics.
 
 **Decision:**  
-PENDING.
+Avoid rebuilding generic infrastructure already supplied by OpenClaw unless experiments expose a concrete gap. This is DECIDED but not LOCKED.
 
 **Reason:**  
 OpenClaw already appears to provide these classes of infrastructure.
@@ -584,7 +584,7 @@ R-006.
 
 ## D-006 — Business idempotency remains Kerani-owned
 
-**Status:** CANDIDATE
+**Status:** DECIDED
 
 **Problem:**  
 Can OpenClaw queue/retry semantics guarantee safe business side effects?
@@ -595,7 +595,7 @@ Can OpenClaw queue/retry semantics guarantee safe business side effects?
 - add business-level idempotency and transaction semantics.
 
 **Decision:**  
-PENDING.
+Business idempotency and transaction semantics remain Kerani-owned. This is DECIDED but not LOCKED.
 
 **Reason:**  
 Runtime execution coordination is not equivalent to safe replay of external business writes.
@@ -613,7 +613,7 @@ Q-004.
 
 ## D-007 — Skills vs enforcement boundary
 
-**Status:** CANDIDATE
+**Status:** DECIDED
 
 **Problem:**  
 Should Kerani integrity rules be implemented primarily as skills/prompts?
@@ -624,7 +624,7 @@ Should Kerani integrity rules be implemented primarily as skills/prompts?
 - skills for guidance plus tools/hooks/services for hard controls.
 
 **Decision:**  
-PENDING.
+Use skills/prompts for guidance; enforce integrity in deterministic tools/hooks/business services. This is DECIDED but not LOCKED.
 
 **Reason:**  
 Business integrity must not rely exclusively on model obedience.
@@ -642,7 +642,7 @@ Q-002.
 
 ## D-008 — Tenant isolation topology
 
-**Status:** CANDIDATE
+**Status:** DECIDED
 
 **Problem:**  
 How should KeraniClaw isolate mutually untrusted clients?
@@ -651,7 +651,7 @@ How should KeraniClaw isolate mutually untrusted clients?
 PENDING research/experiment.
 
 **Decision:**  
-PENDING.
+For mutually untrusted clients, use an isolated OpenClaw Gateway/cell per tenant trust boundary. The exact mechanism (Fleet, separate container, VM, or host) remains an implementation question. This is DECIDED but not LOCKED.
 
 **Reason:**  
 Multi-agent isolation must not be assumed to equal a hostile multi-tenant security boundary.
@@ -671,7 +671,7 @@ Q-005.
 
 No KeraniClaw architecture decision has been LOCKED in this file yet.
 
-The owner has approved saving and committing the STEP 1 reconnaissance and candidate set, but no explicit `LOCK DECISION` instruction has yet been recorded for D-001 to D-008.
+On 2026-09-30 the owner explicitly agreed to the working architecture direction recorded in D-001 through D-009. These decisions are `DECIDED`, not `LOCKED`; the relevant experiments remain required before architecture confirmation.
 
 ---
 
@@ -1057,7 +1057,122 @@ Do not select a winner before evidence exists.
 
 ---
 
-# 25. SOURCE NOTES
+# 25. OWNER AGREEMENT — 2026-09-30
+
+**EXPLICIT — Project Owner**
+
+The owner agreed to continue KeraniClaw in this repository using the working direction discussed on 2026-09-30.
+
+The agreed direction is:
+
+> **OpenClaw = replaceable Agent OS / runtime.**  
+> **Kerani Core = permanent Business Control Plane.**  
+> **Kerani Modules = domain capabilities.**  
+> **External systems (for example n8n, Node-RED, Home Assistant, databases and business systems) = specialised infrastructure/workers.**
+
+This agreement moves D-001 through D-008 to `DECIDED`, but **does not LOCK them**. Evidence from the defined experiments is still required before architecture confirmation.
+
+## D-009 — Thin runtime adapter boundary
+
+**Status:** DECIDED
+
+**Problem:**  
+How much Kerani-specific logic should live inside OpenClaw-native extension code?
+
+**Decision:**  
+Keep OpenClaw-facing code thin. The preferred boundary is:
+
+```text
+OpenClaw
+   ↓
+Thin Kerani Runtime Adapter
+   ↓
+Kerani Business Control Plane / Service
+   ↓
+Kerani Modules
+   ↓
+Authoritative Business Store
+```
+
+The adapter may normalize requests, invoke controlled Kerani services and return responses, but durable business rules, authoritative write lifecycle, audit semantics and module contracts should remain outside OpenClaw-specific internals.
+
+**Reason:**  
+This minimizes coupling to experimental or changing OpenClaw extension APIs and preserves replaceability of the agent runtime.
+
+**Status note:**  
+Owner-approved direction; not LOCKED.
+
+---
+
+## D-010 — Initial VPS sizing baseline
+
+**Status:** CANDIDATE
+
+**Question:**  
+What server size should be used for the first always-on KeraniClaw pilot?
+
+**Candidate baseline:**
+
+- Ubuntu LTS;
+- 2 vCPU;
+- 8 GB RAM;
+- approximately 100 GB NVMe;
+- Docker / Docker Compose;
+- OpenClaw Gateway;
+- thin Kerani adapter / business service;
+- PostgreSQL for TEST/pilot where appropriate;
+- no local LLM on this VPS;
+- model inference provided by external model providers;
+- Tailscale or SSH-based administrative access;
+- Gateway kept loopback/private by default.
+
+**Cost evidence checked 2026-09-30:**
+
+- OpenClaw official VPS guidance states an absolute minimum around 1 vCPU / 1 GB RAM and recommends 2 GB+ RAM for headroom.
+- Hostinger Malaysia OpenClaw KVM 2 is currently advertised at RM38.99/month promotional pricing, renewing at RM59.99/month, with 2 vCPU, 8 GB RAM, 100 GB NVMe and 8 TB bandwidth.
+- Hostinger lists Malaysia and Singapore among available VPS locations.
+- DigitalOcean Basic 2 vCPU / 4 GiB is USD24/month; 4 vCPU / 8 GiB is USD48/month.
+- Hetzner Singapore cloud pricing is materially higher than its European regions after the 15 June 2026 adjustment.
+
+**Interpretation:**  
+A 2 vCPU / 8 GB VPS is a strong pilot starting point when LLM inference is external. 16 GB is a scale-up choice, not a starting requirement.
+
+**Status note:**  
+No server vendor or paid plan has been selected or purchased.
+
+---
+
+## E-005 — VPS Capacity / Cost Test
+
+**Question being tested:**  
+Can a 2 vCPU / 8 GB VPS run the OpenClaw Gateway, Kerani adapter/business service, PostgreSQL and operational logging with adequate headroom for a real pilot?
+
+**Method:**
+
+1. Deploy the pilot stack using pre-built images where possible.
+2. Record idle RAM/CPU.
+3. Run normal Telegram/channel traffic.
+4. Run concurrent worker/sub-agent tasks.
+5. Measure peak RAM, CPU, disk growth and restart behaviour.
+6. Repeat with browser automation disabled and enabled separately.
+
+**Success criteria:**
+
+- no sustained memory pressure / OOM;
+- Gateway remains responsive;
+- business service and database remain responsive;
+- normal workload stays below a defined headroom threshold;
+- upgrade to a larger VPS is based on measurements rather than assumption.
+
+**Result:**  
+PENDING.
+
+**Affected decisions:**  
+D-010.
+
+---
+
+# 26. SOURCE NOTES
 
 Project repositories:
 
